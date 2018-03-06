@@ -1,5 +1,6 @@
 package com.gamma404.expense;
 
+import android.content.ContentValues;
 import android.opengl.ETC1;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,5 +37,13 @@ public class AddActivity extends AppCompatActivity {
         String result ="date :" + date + " ,info :" + info + " ,amount :" + amount;
         Log.d(TAG, "add: " + result );
         Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+
+        DBHelper helper = new DBHelper(this, "expense.db", null, 1);
+        ContentValues contenValues = new ContentValues();
+        contenValues.put("cdate",date);
+        contenValues.put("info",info);
+        contenValues.put("amount", amount);
+        helper.getWritableDatabase().insert("exp",null, contenValues);
+
     }
 }
