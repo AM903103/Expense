@@ -1,10 +1,15 @@
 package com.gamma404.expense;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +21,11 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import static android.Manifest.permission.READ_CONTACTS;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_CONTACT = 110;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setupRecycleView();
+
+        if (ActivityCompat.checkSelfPermission(this,READ_CONTACTS) ==
+                PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this,new String[]{READ_CONTACTS},REQUEST_CONTACT);
+        }else {
+            readContacts();
+        }
+    }
+
+    private void readContacts() {
+        ContentResolver resolver = getContentResolver();
+        Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
     }
 
     private void setupRecycleView() {
@@ -47,6 +68,15 @@ public class MainActivity extends AppCompatActivity {
                 .query("exp", null, null, null, null, null, null);
         ExpenseAdapter adapter = new ExpenseAdapter(cursor);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode==REQUEST_CONTACT) {
+            if (grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+                readContacts();
+            }
+        }
     }
 
     @Override

@@ -45,5 +45,6 @@ public class AddActivity extends AppCompatActivity {
         contenValues.put("amount", amount);
         helper.getWritableDatabase().insert("exp",null, contenValues);
 
+        finish();
     }
 }
