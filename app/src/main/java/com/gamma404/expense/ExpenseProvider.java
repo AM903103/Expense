@@ -15,17 +15,22 @@ import android.util.Log;
 public class ExpenseProvider extends ContentProvider {
 
     public static final String TAG = ExpenseProvider.class.getSimpleName();
+    DBHelper helper;
 
     @Override
     public boolean onCreate() {
         Log.d(TAG, "onCreate: ");
+        helper = DBHelper.getInstance(getContext());
         return false;
     }
 
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+
+        Cursor cursor = helper.getReadableDatabase().query(ExpenseContact.EXPENSE_TABLE
+                , null, null, null, null, null, null);
+        return cursor;
     }
 
     @Nullable

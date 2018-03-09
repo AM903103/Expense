@@ -137,7 +137,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return cursor.getCount();
+            if (cursor != null) {
+                return cursor.getCount();
+            } else {
+                return 0;
+            }
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {

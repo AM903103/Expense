@@ -38,12 +38,13 @@ public class AddActivity extends AppCompatActivity {
         Log.d(TAG, "add: " + result );
         Toast.makeText(this, result, Toast.LENGTH_LONG).show();
 
-        DBHelper helper = new DBHelper(this, "expense.db", null, 1);
+//        DBHelper helper = new DBHelper(this, "expense.db", null, 1);
         ContentValues contenValues = new ContentValues();
         contenValues.put("cdate",date);
         contenValues.put("info",info);
         contenValues.put("amount", amount);
-        helper.getWritableDatabase().insert("exp",null, contenValues);
+        DBHelper.getInstance(this)
+                .getWritableDatabase().insert("exp",null, contenValues);
 
         finish();
     }
