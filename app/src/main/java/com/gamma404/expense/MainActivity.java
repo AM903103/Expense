@@ -83,10 +83,8 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.main_recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        Cursor cursor = new DBHelper(this, "expense.db", null, 1)
-                .getReadableDatabase()
-                .query("exp", null, null, null, null, null, null);
+        Cursor cursor = getContentResolver().query(ExpenseContact.uri
+                , null, null, null, null);
         ExpenseAdapter adapter = new ExpenseAdapter(cursor);
         recyclerView.setAdapter(adapter);
     }

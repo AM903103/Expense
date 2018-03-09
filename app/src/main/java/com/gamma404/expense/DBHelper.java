@@ -15,10 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table exp ( _id INTEGER PRIMARY KEY, " +
-                "cdate TEXT, " +
-                "info TEXT, " +
-                "amount INTEGER )");
+        db.execSQL(ExpenseContact.CREATE_SQL);
     }
 
     @Override
