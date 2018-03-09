@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(android.R.layout.simple_list_item_2, parent, false);
+                    .inflate(R.layout.row_item, parent, false);
             return new ViewHolder(itemView);
         }
 
@@ -141,8 +141,10 @@ public class MainActivity extends AppCompatActivity {
             cursor.moveToPosition(position);
             String cdate = cursor.getString(cursor.getColumnIndex("cdate"));
             String info = cursor.getString((cursor.getColumnIndex("info")));
+            String amount = cursor.getString((cursor.getColumnIndex("amount")));
             holder.dateTextView.setText(cdate);
             holder.intoTextView.setText(info);
+            holder.amountTextView.setText(amount);
         }
 
         @Override
@@ -158,11 +160,13 @@ public class MainActivity extends AppCompatActivity {
 
             private final TextView intoTextView;
             private final TextView dateTextView;
+            private final TextView amountTextView;
 
             ViewHolder(View itemView) {
                 super(itemView);
-                dateTextView = itemView.findViewById(android.R.id.text1);
-                intoTextView = itemView.findViewById(android.R.id.text2);
+                dateTextView = itemView.findViewById(R.id.main_recycler_date);
+                intoTextView = itemView.findViewById(R.id.main_recycler_info);
+                amountTextView = itemView.findViewById(R.id.main_recycler_amount);
             }
         }
     }
