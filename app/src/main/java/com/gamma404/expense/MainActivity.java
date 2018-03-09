@@ -43,23 +43,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setupRecycleView();
+        checkPermission();
+    }
 
-        if (ActivityCompat.checkSelfPermission(this,READ_CONTACTS) ==
+    private void checkPermission() {
+        if (ActivityCompat.checkSelfPermission(this, READ_CONTACTS) ==
                 PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this,new String[]{READ_CONTACTS},REQUEST_CONTACT);
-        }else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{READ_CONTACTS}, REQUEST_CONTACT);
+        } else {
             readContacts();
         }
     }
 
-    private void readContacts() {
-        ContentResolver resolver = getContentResolver();
-        Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setupRecycleView();
     }
 
+    private void readContacts() {
+        ContentResolver resolver = getContentResolver();
+        resolver.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null, null);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CONTACT) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                readContacts();
+            }
+        }
+    }
+
+
     private void setupRecycleView() {
-        RecyclerView recyclerView =findViewById(R.id.main_recycler);
+        RecyclerView recyclerView = findViewById(R.id.main_recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -70,14 +91,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode==REQUEST_CONTACT) {
-            if (grantResults[0]== PackageManager.PERMISSION_GRANTED) {
-                readContacts();
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
