@@ -21,6 +21,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddActivity"></activity>
+
+        <provider
+            android:name=".ExpenseProvider"
+            android:authorities="com.gamma404.expense"
+            android:exported="true" />
     </application>
 
 </manifest>
