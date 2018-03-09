@@ -19,7 +19,7 @@ public class ExpenseContact {
                     COL_DATE + " TEXT, " +
                     COL_INFO + " TEXT, " +
                     COL_AMOUNT + " INTEGER )";
-    private static final String authority = "com.gamma404.expense";
+    public static final String authority = "com.gamma404.expense";
     public static final Uri uri = new Uri.Builder()
             .scheme("content")
             .authority(authority)

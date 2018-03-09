@@ -1,9 +1,11 @@
 package com.gamma404.expense;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -83,7 +85,15 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.main_recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Cursor cursor = getContentResolver().query(ExpenseContact.uri
+
+        //兩種case 假定第二種是在id是2
+        Uri uri = ContentUris.withAppendedId(ExpenseContact.uri, 2);
+
+        //ExpenseContract.uri 是第一種不含參數 取全部
+        //uri 是第二種 取特定筆
+        Cursor cursor = getContentResolver().query(
+//                ExpenseContact.uri
+                uri
                 , null, null, null, null);
         ExpenseAdapter adapter = new ExpenseAdapter(cursor);
         recyclerView.setAdapter(adapter);
