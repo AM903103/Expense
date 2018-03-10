@@ -36,24 +36,16 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         cursor.moveToPosition(position);
-        final int id = cursor.getInt(cursor.getColumnIndex(ExpenseContact.COL_ID));
-        final String cdate = cursor.getString(cursor.getColumnIndex(ExpenseContact.COL_DATE));
-        final String info = cursor.getString((cursor.getColumnIndex(ExpenseContact.COL_INFO)));
-        final int amount = cursor.getInt((cursor.getColumnIndex(ExpenseContact.COL_AMOUNT)));
-        holder.dateTextView.setText(cdate);
-        holder.intoTextView.setText(info);
-        holder.amountTextView.setText(amount + "");
+        final Expense expense = new Expense(cursor);
+        holder.setModel(expense);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
-            public Expense expense = new Expense(id, cdate, info, amount);
-
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: " + info);
+                Log.d(TAG, "onClick: " + expense.getInfo());
                 if (onRecyclerViewItemClickListener != null) {
                     onRecyclerViewItemClickListener.onItemClick(v,//老師這裡用holder.itemView
                             expense);
                 }
-
             }
         });
     }
@@ -78,6 +70,12 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
             dateTextView = itemView.findViewById(R.id.main_recycler_date);
             intoTextView = itemView.findViewById(R.id.main_recycler_info);
             amountTextView = itemView.findViewById(R.id.main_recycler_amount);
+        }
+
+        public void setModel(Expense expense) {
+            dateTextView.setText(expense.getDate());
+            intoTextView.setText(expense.getInfo());
+            amountTextView.setText(expense.getAmount() + "");
         }
     }
 

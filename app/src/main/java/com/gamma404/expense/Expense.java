@@ -1,5 +1,7 @@
 package com.gamma404.expense;
 
+import android.database.Cursor;
+
 /**
  * Created by forev on 2018/3/10.
  */
@@ -18,6 +20,13 @@ public class Expense {
         this.date = date;
         this.info = info;
         this.amount = amount;
+    }
+
+    public Expense(Cursor cursor) {
+        id = cursor.getInt(cursor.getColumnIndex(ExpenseContact.COL_ID));
+        date = cursor.getString(cursor.getColumnIndex(ExpenseContact.COL_DATE));
+        info = cursor.getString((cursor.getColumnIndex(ExpenseContact.COL_INFO)));
+        amount = cursor.getInt((cursor.getColumnIndex(ExpenseContact.COL_AMOUNT)));
     }
 
     public int getId() {
