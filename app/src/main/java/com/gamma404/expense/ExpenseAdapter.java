@@ -2,6 +2,7 @@ package com.gamma404.expense;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHolder> {
     private Cursor cursor;
+    private String TAG = ExpenseAdapter.class.getSimpleName();
 
     public ExpenseAdapter(Cursor cursor) {
         this.cursor = cursor;
@@ -29,11 +31,17 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         cursor.moveToPosition(position);
         String cdate = cursor.getString(cursor.getColumnIndex("cdate"));
-        String info = cursor.getString((cursor.getColumnIndex("info")));
+        final String info = cursor.getString((cursor.getColumnIndex("info")));
         String amount = cursor.getString((cursor.getColumnIndex("amount")));
         holder.dateTextView.setText(cdate);
         holder.intoTextView.setText(info);
         holder.amountTextView.setText(amount);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: " + info);
+            }
+        });
     }
 
     @Override
