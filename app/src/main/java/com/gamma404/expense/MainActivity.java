@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
@@ -25,9 +26,10 @@ import android.widget.TextView;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ExpenseAdapter.OnRecyclerViewItemClickListener {
 
     private static final int REQUEST_CONTACT = 110;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 uri
                 , null, null, null, null);
         ExpenseAdapter adapter = new ExpenseAdapter(cursor);
+        adapter.setOnRecyclerViewItemClickListener(this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -123,4 +126,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemClick(View view, Expense expense) {
+        Log.d(TAG, "onItemClick: "+expense.getInfo());
+    }
 }

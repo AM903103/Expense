@@ -16,6 +16,12 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     private Cursor cursor;
     private String TAG = ExpenseAdapter.class.getSimpleName();
 
+    OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
+
+    public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener onRecyclerViewItemClickListener) {
+        this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
+    }
+
     public ExpenseAdapter(Cursor cursor) {
         this.cursor = cursor;
     }
@@ -28,18 +34,26 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         cursor.moveToPosition(position);
-        String cdate = cursor.getString(cursor.getColumnIndex("cdate"));
-        final String info = cursor.getString((cursor.getColumnIndex("info")));
-        String amount = cursor.getString((cursor.getColumnIndex("amount")));
+        final int id = cursor.getInt(cursor.getColumnIndex(ExpenseContact.COL_ID));
+        final String cdate = cursor.getString(cursor.getColumnIndex(ExpenseContact.COL_DATE));
+        final String info = cursor.getString((cursor.getColumnIndex(ExpenseContact.COL_INFO)));
+        final int amount = cursor.getInt((cursor.getColumnIndex(ExpenseContact.COL_AMOUNT)));
         holder.dateTextView.setText(cdate);
         holder.intoTextView.setText(info);
-        holder.amountTextView.setText(amount);
+        holder.amountTextView.setText(amount + "");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            public Expense expense = new Expense(id, cdate, info, amount);
+
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: " + info);
+                if (onRecyclerViewItemClickListener != null) {
+                    onRecyclerViewItemClickListener.onItemClick(v,//老師這裡用holder.itemView
+                            expense);
+                }
+
             }
         });
     }
@@ -65,5 +79,9 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
             intoTextView = itemView.findViewById(R.id.main_recycler_info);
             amountTextView = itemView.findViewById(R.id.main_recycler_amount);
         }
+    }
+
+    public interface OnRecyclerViewItemClickListener {
+        public void onItemClick(View view, Expense expense);
     }
 }
