@@ -1,5 +1,6 @@
 package com.gamma404.expense;
 
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,12 +19,17 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
     OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
 
+    public ExpenseAdapter() {
+
+    }
+
     public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener onRecyclerViewItemClickListener) {
         this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
     }
 
-    public ExpenseAdapter(Cursor cursor) {
+    public void swap(Cursor cursor) {
         this.cursor = cursor;
+        notifyDataSetChanged();
     }
 
     @Override
