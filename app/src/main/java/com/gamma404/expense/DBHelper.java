@@ -41,9 +41,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(TAG, "onCreate: 1");
         db.execSQL(ExpenseContact.CREATE_SQL);
-        Log.d(TAG, "onCreate: 2");
+
+        readExpensesFromResources(db);
+    }
+
+    private void readExpensesFromResources(SQLiteDatabase db) {
         InputStream is = context.getResources().openRawResource(R.raw.expense);
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -54,7 +57,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 sb.append(line);
                 line = in.readLine();
             }
-            Log.d(TAG, "onCreate: 4");
             String json = sb.toString();
             JSONObject object = new JSONObject(json);
             JSONArray expense = object.getJSONArray("expenses");
@@ -64,16 +66,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 String date = exp.getString("cdate");
                 String info = exp.getString("info");
                 int amount = exp.getInt("amount");
-                Log.d(TAG, "onCreate: 5");
                 ContentValues values = new ContentValues();
                 values.put("cdate", date);
                 values.put("info", info);
                 values.put("amount", amount);
-                Log.d(TAG, "onCreate: 6");
-                context.getContentResolver().insert(ExpenseContact.uri, values);
-                Log.d(TAG, "onCreate: 7");
+                //會db recursive call
+//                context.getContentResolver().insert(ExpenseContact.uri, values);
+                //OK
+                //long id = db.insert(ExpenseContact.EXPENSE_TABLE, null, values);
+                AddExpenseService.insert(context,values);
             }
-            Log.d(TAG, "onCreate: 8");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

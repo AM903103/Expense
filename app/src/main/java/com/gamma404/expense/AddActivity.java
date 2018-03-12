@@ -43,9 +43,12 @@ public class AddActivity extends AppCompatActivity {
         contenValues.put("cdate",date);
         contenValues.put("info",info);
         contenValues.put("amount", amount);
-        DBHelper.getInstance(this)
-                .getWritableDatabase().insert("exp",null, contenValues);
 
-        finish();
+        AddExpenseService.insert(this, contenValues);
+
+//        DBHelper.getInstance(this)
+//                .getWritableDatabase().insert("exp",null, contenValues);
+
+        //finish();
     }
 }
