@@ -78,7 +78,7 @@ public class ExpenseProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         long id = helper.getWritableDatabase()
                 .insert(ExpenseContact.EXPENSE_TABLE
-        ,null, values);
+                        , null, values);
 
         if (id > 0) {
             return ContentUris.withAppendedId(ExpenseContact.uri, id);
@@ -94,6 +94,11 @@ public class ExpenseProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int rowCount = helper.getWritableDatabase()
+                .update(ExpenseContact.EXPENSE_TABLE,
+                        values,
+                        selection,
+                        selectionArgs);
+        return rowCount;
     }
 }

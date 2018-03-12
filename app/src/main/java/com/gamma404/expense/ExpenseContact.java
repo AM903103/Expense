@@ -13,12 +13,14 @@ public class ExpenseContact {
     public static final String COL_DATE = "cdate";
     public static final String COL_INFO = "info";
     public static final String COL_AMOUNT = "amount";
+    public static final String COL_READ = "read";
     public static final String CREATE_SQL =
             "create table " + EXPENSE_TABLE + " ( " +
                     COL_ID + " INTEGER PRIMARY KEY, " +
                     COL_DATE + " TEXT, " +
                     COL_INFO + " TEXT, " +
-                    COL_AMOUNT + " INTEGER )";
+                    COL_AMOUNT + " INTEGER, " +
+                    COL_READ + " INTEGER " + ")";
     public static final String authority = "com.gamma404.expense";
     public static final Uri uri = new Uri.Builder()
             .scheme("content")

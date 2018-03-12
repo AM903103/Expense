@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 /**
@@ -70,18 +72,32 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         private final TextView intoTextView;
         private final TextView dateTextView;
         private final TextView amountTextView;
+        private final CheckBox readCheckBox;
 
         ViewHolder(View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.main_recycler_date);
             intoTextView = itemView.findViewById(R.id.main_recycler_info);
             amountTextView = itemView.findViewById(R.id.main_recycler_amount);
+            readCheckBox = itemView.findViewById(R.id.main_recycler_read);
         }
 
-        public void setModel(Expense expense) {
+        public void setModel(final Expense expense) {
             dateTextView.setText(expense.getDate());
             intoTextView.setText(expense.getInfo());
             amountTextView.setText(expense.getAmount() + "");
+            readCheckBox.setChecked(expense.getRead() != 0);
+            readCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    expense.setRead(isChecked ? 1 : 0);
+                    itemView.getContext().getContentResolver()
+                            .update(ExpenseContact.uri,
+                                    expense.getContentValues()
+                                    , ExpenseContact.COL_ID + " = ? "
+                                    , new String[]{expense.getId() + ""});
+                }
+            });
         }
     }
 
