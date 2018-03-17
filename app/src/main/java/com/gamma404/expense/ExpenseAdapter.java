@@ -46,6 +46,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         cursor.moveToPosition(position);
         final Expense expense = new Expense(cursor);
         holder.setModel(expense);
+        holder.itemView.setTag(expense);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
