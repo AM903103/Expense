@@ -2,6 +2,7 @@ package com.gamma404.expense;
 
 import android.content.ContentValues;
 import android.opengl.ETC1;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,16 +34,24 @@ public class AddActivity extends AppCompatActivity {
     public void add(View view) {
         String date = edDate.getText().toString();
         String info = edInfo.getText().toString();
-        String amount = edAmount.getText().toString();
-        String result ="date :" + date + " ,info :" + info + " ,amount :" + amount;
-        Log.d(TAG, "add: " + result );
-        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+        int amount = Integer.parseInt(edAmount.getText().toString());
+
+        boolean reminders =
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .getBoolean("pref_reminders", false);
+        Log.d(TAG, "add: " + reminders);
+
+        if (reminders && amount > 0) {
+            Log.d(TAG, "add: " );
+        }
+
+        showDataInfo(date, info, amount+"");
 
 //        DBHelper helper = new DBHelper(this, "expense.db", null, 1);
         ContentValues contenValues = new ContentValues();
-        contenValues.put("cdate",date);
-        contenValues.put("info",info);
-        contenValues.put("amount", amount);
+        contenValues.put("cdate", date);
+        contenValues.put("info", info);
+        contenValues.put("amount", amount+"");
 
         AddExpenseService.insert(this, contenValues);
 
@@ -50,5 +59,11 @@ public class AddActivity extends AppCompatActivity {
 //                .getWritableDatabase().insert("exp",null, contenValues);
 
         //finish();
+    }
+
+    private void showDataInfo(String date, String info, String amount) {
+        String result = "date :" + date + " ,info :" + info + " ,amount :" + amount;
+        Log.d(TAG, "add: " + result);
+        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
     }
 }

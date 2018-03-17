@@ -4,7 +4,7 @@
     <SwitchPreference
         android:defaultValue="false"
         android:key="pref_reminders"
-        android:persistent="false"
+        android:persistent="true"
         android:summary="Reminder to practice"
         android:title="Reminder" />
 </PreferenceScreen>
