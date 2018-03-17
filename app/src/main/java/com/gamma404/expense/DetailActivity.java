@@ -37,7 +37,7 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete) {
             Log.d(TAG, "onOptionsItemSelected: ");
-            getContentResolver().delete(ExpenseContact.uri, " = ? ",
+            getContentResolver().delete(ExpenseContact.uri, ExpenseContact.COL_ID + " = ? ",
                     new String[]{expense.getId() + ""});
             finish();
         }
