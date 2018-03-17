@@ -30,7 +30,8 @@
 
         <service android:name=".AddExpenseService" />
 
-        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".DetailActivity" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>
