@@ -1,5 +1,8 @@
 package com.gamma404.expense;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +13,7 @@ public class SettingsActivity extends AppCompatActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = SettingsActivity.class.getSimpleName();
+    private static final int JOB_ID = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,14 @@ public class SettingsActivity extends AppCompatActivity implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d(TAG, "onSharedPreferenceChanged: key:" + key );
         boolean ref_reminders = sharedPreferences.getBoolean(key, false);
         Log.d(TAG, "onSharedPreferenceChanged: key:" + key + " : " + ref_reminders);
+
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        new JobInfo.Builder(JOB_ID,new ComponentName(getPackageName(),MyJobService.class.getName()))
+                .setPeriodic(60*1000)
+                .setPersisted(true)
+                .build();
+
     }
 }
