@@ -34,6 +34,11 @@
 
         <activity android:name=".DetailActivity" />
         <activity android:name=".SettingsActivity"></activity>
+
+        <service
+            android:name=".MyJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
     </application>
 
 </manifest>

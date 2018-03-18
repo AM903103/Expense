@@ -45,10 +45,11 @@ public class SettingsActivity extends AppCompatActivity implements
         Log.d(TAG, "onSharedPreferenceChanged: key:" + key + " : " + ref_reminders);
 
         JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        new JobInfo.Builder(JOB_ID,new ComponentName(getPackageName(),MyJobService.class.getName()))
-                .setPeriodic(60*1000)
+        JobInfo job = new JobInfo.Builder(JOB_ID, new ComponentName(getPackageName(), MyJobService.class.getName()))
+                .setPeriodic(60 * 1000)
                 .setPersisted(true)
                 .build();
+        jobScheduler.schedule(job);
 
     }
 }
